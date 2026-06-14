@@ -1,8 +1,7 @@
 # Overview
 
-KusinaKanto2 is a web-based food ordering system built with Blazor Server, Entity Framework Core, and SQLite. The application is designed for a Filipino bakery and restaurant, allowing customers to browse menu items, place dine-in or takeout orders, manage their cart, and track order progress. The system provides a modern and responsive ordering experience while simplifying restaurant operations.
+KusinaKanto is a web-based food ordering system built with Blazor Server, Entity Framework Core, and SQLite. The application is designed for a Filipino bakery, allowing customers to browse menu items, place dine-in or takeout orders, manage their cart, and track order progress. The system provides a modern and responsive ordering experience while simplifying restaurant operations.
 
-The purpose of this project was to deepen my understanding of full-stack web development using the .NET ecosystem. Through building this application, I gained experience working with Blazor components, state management, database design, Entity Framework Core, dependency injection, routing, and responsive user interface development.
 
 ## Running the Application
 
@@ -33,7 +32,7 @@ or the URL displayed in the terminal.
 
 The menu page displays available bakery and food items organized by category. Customers can browse products, view descriptions and prices, and add items to their cart. Menu items are dynamically loaded from the database.
 
-## Shopping Cart
+## Cart
 
 The cart page displays selected items, quantities, and the current order total. Customers can update quantities, remove items, and proceed to checkout. Cart contents are managed through a shared state service.
 
@@ -51,11 +50,7 @@ Dine-in customers can view active orders associated with their table number. The
 
 ## Thank You Page
 
-When dine-in customers request checkout, they are redirected to a thank-you page confirming that payment assistance has been requested. A cashier can then process the payment.
-
-## Cashier View
-
-The cashier view displays orders that have requested checkout and are ready for payment processing. Cashiers can review order totals and update payment status.
+When dine-in customers request checkout, they are redirected to a thank-you page. 
 
 # Development Environment
 
@@ -71,7 +66,7 @@ The cashier view displays orders that have requested checkout and are ready for 
 * C#
 * Razor Components
 * HTML
-* CSS
+* Tailwind
 * Blazor Server
 * ASP.NET Core
 * Entity Framework Core
