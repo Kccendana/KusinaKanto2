@@ -1,0 +1,144 @@
+@implements IDisposable
+@inject CartState Cart
+
+<div class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl max-h-[90vh] flex flex-col">
+        
+        <div class="flex items-center justify-between px-6 py-4 border-b border-stone-100">
+            <div>
+                <h2 class="text-lg font-bold text-stone-900">
+                    Complete Your Order
+                </h2>
+                <p class="text-sm text-stone-500">
+                    @Cart.Lines.Count item@(Cart.Lines.Count != 1 ? "s" : "")
+                    · ¥@Cart.Total
+                </p>
+            </div>
+
+            <button @onclick="OnClose"
+                    class="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-600 hover:bg-stone-100 rounded-xl transition-colors">
+                <Icon Name="x" Class="w-5 h-5" />
+            </button>
+        </div>
+
+        <div class="overflow-y-auto flex-1">
+
+            <!-- Order Type -->
+            <div class="px-6 pt-4">
+                <div class="bg-stone-50 rounded-xl p-4">
+                    @if (TableNumber.HasValue)
+                    {
+                        <div>
+                            <p class="font-semibold text-green-700">
+                                Dine-In Order
+                            </p>
+
+                            <p class="text-sm text-stone-600">
+                                Table @TableNumber
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <p class="font-semibold text-blue-700">
+                                Take-Out Order
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="px-6 py-4 bg-stone-50 border-b border-stone-100 mt-4">
+                <p class="text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">
+                    Order Summary
+                </p>
+
+                <div class="space-y-1.5">
+                    @foreach (var line in Cart.Lines)
+                    {
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-700">
+                                @line.Item.Name
+                                <span class="text-stone-400">
+                                    ×@line.Quantity
+                                </span>
+                            </span>
+
+                            <span class="font-medium text-stone-900">
+                                ¥@line.Subtotal
+                            </span>
+                        </div>
+                    }
+                </div>
+
+                <div class="flex items-center justify-between mt-3 pt-3 border-t border-stone-200 font-bold text-stone-900">
+                    <span>Total</span>
+                    <span>¥@Cart.Total</span>
+                </div>
+            </div>
+
+            <!-- Confirm -->
+            <form @onsubmit="HandleSubmit"
+                  @onsubmit:preventDefault
+                  class="px-6 py-4">
+
+                <button type="submit"
+                        disabled="@_loading"
+                        class="w-full bg-amber-500 hover:bg-amber-600 disabled:opacity-60 text-white py-3.5 rounded-xl font-semibold text-base transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+
+                    @if (_loading)
+                    {
+                        <Icon Name="loader-circle"
+                              Class="w-4 h-4 animate-spin" />
+                        <span>Placing Order...</span>
+                    }
+                    else
+                    {
+                        <span>
+                            Confirm Order · ¥@Cart.Total
+                        </span>
+                    }
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int? TableNumber { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback<CheckoutDetails> OnSubmit { get; set; }
+
+    private bool _loading;
+
+    private async Task HandleSubmit()
+    {
+        _loading = true;
+
+        try
+        {
+            await OnSubmit.InvokeAsync(new CheckoutDetails());
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        Cart.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        Cart.OnChange -= StateHasChanged;
+    }
+}
