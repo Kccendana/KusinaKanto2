@@ -26,11 +26,18 @@
                     Current and previous orders
                 </p>
             </div>
-
-            <button @onclick="OrderMore"
+            <div>
+                <button @onclick="OrderMore"
                     class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-xl font-medium transition">
                 Order More
             </button>
+            <button @onclick="RequestCheckout"
+                    class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-xl font-medium transition">
+                Request Checkout
+            </button>
+            </div>
+
+            
 
         </div>
     </div>
@@ -143,6 +150,24 @@ private void OrderMore()
 {
     Nav.NavigateTo($"/{TableNumber}");
 }
+
+private async Task RequestCheckout()
+{
+    var orders = await Db.Orders
+        .Where(o => o.TableNumber == TableNumber &&
+               o.Status != OrderStatus.CheckoutRequested &&
+               o.Status != OrderStatus.Completed)
+        .ToListAsync();
+
+    foreach (var order in orders)
+    {
+        order.Status = OrderStatus.CheckoutRequested;
+    }
+
+    await Db.SaveChangesAsync();
+
+    Nav.NavigateTo($"/thank-you/{TableNumber}");
+}
     [Parameter]
 public int TableNumber { get; set; }
 
@@ -161,10 +186,11 @@ protected override async Task OnInitializedAsync()
 {
     var orders = await Db.Orders
     .Include(o => o.Items)
-    .Where(o => o.TableNumber == TableNumber)
+    .Where(o => o.TableNumber == TableNumber
+        && o.Status != OrderStatus.CheckoutRequested
+        && o.Status != OrderStatus.Completed)
     .OrderByDescending(o => o.CreatedAt)
     .ToListAsync();
-
     _overallTotal = orders.Sum(o => o.TotalAmount);
 
     _rows = _rows = orders
@@ -196,6 +222,9 @@ protected override async Task OnInitializedAsync()
 
             OrderStatus.Completed =>
                 "text-gray-600 font-semibold",
+
+            OrderStatus.CheckoutRequested =>
+                "text-purple-600 font-semibold",
 
             _ => ""
         };
