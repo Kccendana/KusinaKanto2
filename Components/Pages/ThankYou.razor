@@ -1,0 +1,37 @@
+@page "/thank-you/{TableNumber:int}"
+
+<PageTitle>Thank You</PageTitle>
+
+<div class="min-h-screen flex items-center justify-center bg-stone-50">
+    <div class="max-w-lg bg-white rounded-3xl shadow-lg p-10 text-center">
+
+        <div class="text-6xl mb-4">
+            <img src="log.png" alt="Thank You" class="w-24 h-24 mx-auto" />
+        </div>
+
+        <h1 class="text-3xl font-bold text-stone-900 mb-4">
+            Thank You for Dining With Us!
+        </h1>
+
+        <p class="text-stone-600 text-lg">
+            We hope you had a wonderful experience at KusinaKanto.
+        </p>
+
+        <p class="text-stone-500 mt-4">
+            Please proceed to the cashier to complete your payment.
+        </p>
+
+        <div class="mt-8">
+            <a href="@($"/{TableNumber}")"
+               class="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-xl font-medium">
+                Return Home
+            </a>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int TableNumber { get; set; }
+}
