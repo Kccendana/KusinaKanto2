@@ -5,6 +5,8 @@
 @inject CartState Cart
 @inject NavigationManager Nav
 
+
+// Main menu page showing available dishes, with category filter and search functionality.
 <div class="min-h-screen bg-stone-50">
     <Header  TableNumber="@TableNumber" OnCartClick="() => _cartOpen = true" />
 
@@ -64,7 +66,7 @@
             }
         }
     </div>
-
+    // Cart and checkout modals
     @if (_cartOpen)
     {
         <CartDrawer OnClose="() => _cartOpen = false"
@@ -83,6 +85,7 @@
 @code {
     [Parameter]
     public int? TableNumber { get; set; }
+
     private IReadOnlyList<MenuCategory> _categories = new List<MenuCategory>();
     private IReadOnlyList<MenuItem> _items = new List<MenuItem>();
     private bool _loading = true;
@@ -92,6 +95,7 @@
     private bool _cartOpen;
     private bool _checkoutOpen;
 
+// Load menu data on initialization
     protected override async Task OnInitializedAsync()
     {
         try
@@ -108,11 +112,12 @@
             _loading = false;
         }
     }
-
+// Handle category filter changes
     private void OnCategoryChange(string id) => _activeCategory = id;
 
     private record MenuGroup(MenuCategory? Category, List<MenuItem> Items);
 
+// Filter and group menu items based on active category and search term
     private List<MenuItem> Filtered
     {
         get
@@ -130,7 +135,7 @@
             return result.ToList();
         }
     }
-
+// Group filtered items by category for display
     private List<MenuGroup> Grouped
     {
         get
@@ -144,7 +149,7 @@
                 .ToList();
         }
     }
-
+// Handle checkout submission, create order and navigate to confirmation page
     private async Task HandleCheckout(CheckoutDetails details)
 {
     Console.WriteLine($"TableNumber = {TableNumber}");

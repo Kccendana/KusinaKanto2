@@ -150,7 +150,7 @@ private void OrderMore()
 {
     Nav.NavigateTo($"/{TableNumber}");
 }
-
+// Handle checkout request, update order status and navigate to thank you page
 private async Task RequestCheckout()
 {
     var orders = await Db.Orders
@@ -182,6 +182,7 @@ private class OrderHistoryRow
     private List<Order> _orders = new();
     private List<OrderHistoryRow> _rows = new();
 
+// Load orders for the specified table and prepare data for display
 protected override async Task OnInitializedAsync()
 {
     var orders = await Db.Orders

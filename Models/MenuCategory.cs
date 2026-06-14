@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace KusinaKanto.Models;
-/// <summary>A group of menu items, e.g. "Starters" or "Desserts".</summary>
+/// <summary>A group of menu items, e.g. "Breads" or "Cakes".</summary>
 public class MenuCategory
 {
     [Key]
