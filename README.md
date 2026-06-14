@@ -22,7 +22,7 @@ https://localhost:7156
 
 or the URL displayed in the terminal.
 
-## Software Demo Video
+## Demo Video
 
 [Demo Video](https://www.loom.com/share/5ca401db718f42b39e57bf507f6bc44d)
 
