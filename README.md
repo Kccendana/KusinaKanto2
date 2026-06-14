@@ -24,7 +24,7 @@ or the URL displayed in the terminal.
 
 ## Software Demo Video
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Demo Video](https://www.loom.com/share/5ca401db718f42b39e57bf507f6bc44d)
 
 # Web Pages
 
